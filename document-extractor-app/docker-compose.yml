@@ -11,7 +11,7 @@ services:
       - ./uploads:/app/uploads
     environment:
       - LLM_PROVIDER=openai
-      - OPENAI_API_KEY=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
+      - OPENAI_API_KEY=<API_KEY_HERE>
       - OPENAI_MODEL=gpt-4o-mini
       - UPLOAD_FOLDER=./uploads
       - MAX_FILE_SIZE=10485760

@@ -212,7 +212,7 @@ The application extracts the following structured data:
 
 ## Additional Documentation
 
-For detailed information on scaling the application for production use, handling higher volumes, and supporting additional document types, see [SCALING_STRATEGIES.md](./SCALING_STRATEGIES.md).
+For detailed information on scaling the application for production use, handling higher volumes, and supporting additional document types, see [SCALING_STRATEGIES.md](./document-extractor-app/SCALING_STRATEGIES.md).
 
 This document covers:
 - Asynchronous processing and queue-based architectures
