@@ -1,0 +1,51 @@
+services:
+  # Backend Service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: document-extractor-backend
+    ports:
+      - "4200:5000"
+    volumes:
+      - ./uploads:/app/uploads
+    environment:
+      - LLM_PROVIDER=openai
+      - OPENAI_API_KEY=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
+      - OPENAI_MODEL=gpt-4o-mini
+      - UPLOAD_FOLDER=./uploads
+      - MAX_FILE_SIZE=10485760
+      - ALLOWED_EXTENSIONS=pdf,png,jpg,jpeg,txt
+      - CORS_ORIGINS=http://localhost:3000,http://frontend:3000
+      - FLASK_ENV=production
+      - PORT=5000
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Frontend Service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: document-extractor-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:4200/api
+      - NODE_ENV=production
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget --quiet --tries=1 --spider http://localhost:3000 || curl -f http://localhost:3000 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
